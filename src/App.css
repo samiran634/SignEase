@@ -1,42 +1,91 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+html
+{
+    background: #f7f4eae0 ;
+}
+body
+{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header
+{
+    background-image: url(../images/background.jpg) ;
+    background-position: center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    height: 190px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.575);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+
+.welcome
+{
+    flex: none;
+    margin-left: 10%;
+    margin-top: 115px;
+    font-size: 30px;
+    line-height: 60px;
+    color: #F0F4EF;
 }
 
-.card {
-  padding: 2em;
+.team-name
+{
+    flex: none;
+    margin-right: 10%;
+    margin-top: 115px;
+    font-size: 30px;
+    line-height: 60px;
+    color: #F0F4EF;
 }
 
-.read-the-docs {
-  color: #888;
+
+a
+{
+    text-decoration: none;
+}
+
+.navbar
+{
+    position: fixed;
+    width: 100%;
+    padding: 20px 10px;
+    display: flex;
+    gap: 7%;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.navbar a
+{
+    position: relative;
+    font-size: 18px;
+    color: #443850 ;
+    font-weight: 500;
+
+}
+
+
+.navbar a:hover::before
+{
+    width: 100%;
+    background: #7C90DB;
+}
+.navbar a::before
+{
+    content: '';
+    position: absolute;
+    width: 0;
+    top:100%;
+    left: 0;
+    height: 3px;
+    background: #f7f4eae0;
+    transition: 0.3s;
 }
