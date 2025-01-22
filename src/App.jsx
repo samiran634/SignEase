@@ -1,5 +1,5 @@
-import Header from "../react_componets/Header"
-import Navbar from "../react_componets/Navbar"
+import Header from "./react_componets/Header"
+import Navbar from "./react_componets/Navbar"
 import "./app.css"
 
 function App() {
