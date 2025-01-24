@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import './App.css'
-import LandingPage from './components/landing_page'
+import { LandingPage } from './components/landing/LandingPage'
+import { SignIn } from '@clerk/clerk-react'
 
 function App() {
-  const [count, setCount] = useState(0)
+   
 
   return (
-    <>
+    <>  
       <LandingPage />
     </>
   )
