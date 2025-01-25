@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import { LandingPage } from './components/landing/LandingPage'
-import { SignIn } from '@clerk/clerk-react'
+import  { LandingPage } from './components/landing/LandingPage'
+  
 
 function App() {
    

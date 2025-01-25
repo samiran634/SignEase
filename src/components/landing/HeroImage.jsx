@@ -22,7 +22,7 @@ const AspectRatio = ({ children, ratio = 1 }) => (
 
 const devices = {
   image: {
-    src: "../../public/assets/hero-image.png",  
+    src: "../../assets/hero_image.png",  
     alt: "3D mockup scene featuring Apple devices including a notebook, tablet and phone with sleek minimal design",
   },
 };
