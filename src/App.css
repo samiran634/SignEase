@@ -69,7 +69,6 @@ a
     font-size: 18px;
     color: #443850 ;
     font-weight: 500;
-
 }
 
 
@@ -88,4 +87,11 @@ a
     height: 3px;
     background: #f7f4eae0;
     transition: 0.3s;
+}
+
+.container
+{
+    margin-top: 80px;
+    text-align: center;
+    font-size: 13px;
 }
