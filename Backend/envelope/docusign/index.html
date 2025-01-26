@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DocuSign Envelope Sender</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: auto; padding: 20px; }
+        input { width: 100%; margin: 10px 0; padding: 8px; }
+        button { width: 100%; padding: 10px; background-color: #4CAF50; color: white; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Send DocuSign Envelope</h2>
+    <form id="envelopeForm">
+        <input type="text" id="ccName" placeholder="CC Name" required>
+        <input type="email" id="ccEmail" placeholder="CC Email" required>
+        <input type="text" id="signerName" placeholder="Signer Name" required>
+        <input type="email" id="signerEmail" placeholder="Signer Email" required>
+        <button type="submit">Send Envelope</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('envelopeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const resultDiv = document.getElementById('result');
+            
+            const payload = {
+                ccName: document.getElementById('ccName').value,
+                ccEmail: document.getElementById('ccEmail').value,
+                signerName: document.getElementById('signerName').value,
+                signerEmail: document.getElementById('signerEmail').value
+            };
+        
+            try {
+                const response = await fetch('http://localhost:8080/send-envelope', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+        
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+        
+                const data = await response.json();
+                resultDiv.textContent = `Envelope sent successfully! ID: ${data.envelopeId}`;
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+                console.error('Full error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
