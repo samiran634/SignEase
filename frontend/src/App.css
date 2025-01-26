@@ -1,0 +1,28 @@
+ body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* background-color: #050D38; */
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-content {
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
