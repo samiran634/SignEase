@@ -1,32 +1,38 @@
 import React,{useState} from "react";
  import cool_background from "../../assets/cool_background.png";
-import { NavBar } from "../landing/NavBar";
-import MainPage from "./mainpage";
-import PdfReadandAsk from "./common";
-export default function Previous() {
-    const [currentView, setCurrentView] = useState('previous');
+import { NavBar } from "../common/NavBar";
+ import { useUser,UserProfile,RedirectToSignIn } from "@clerk/clerk-react";
+import { useNavigate } from 'react-router-dom';
+
+export default function PreviousPage() {
+  const navigate=useNavigate();
+  const user=useUser().user;
+  if(!user){
+   return (<RedirectToSignIn/>)
+  }
     const [isClicked, setIsClicked] = useState(false);
+
     const navItems = [
-        {
-            text:"home",
-            onClick: () => setCurrentView('home'),
-            ariaLabel: "home"
-        },
-        {
-          text: "profile",
-          onClick: () => setCurrentView('profile'),
-          ariaLabel: "login"
-        },
-        {
-          text: "About",
-          onClick: () =>  setCurrentView("about"),
-          ariaLabel: "about"
-        }
-      ]
+      { 
+          text:"home",
+          onClick: () =>  navigate('/home'),
+          ariaLabel: "home"
+      },
+      {
+        text: "profile",
+        onClick: () => navigate('/profile'),
+        ariaLabel: "profile"
+      },
+      {
+        text: "About",
+        onClick: () =>  navigate('/about'),
+        ariaLabel: "about"
+      }
+    ]
   return (
     <div>
-        {
-            currentView==="previous"&&(
+      
+        
 <div className="main-container w-screen h-screen bg-[#00061c] relative overflow-hidden mx-auto my-0 px-6" style={{ backgroundImage: `url(${cool_background})`, backgroundPosition: 'right', backgroundRepeat: 'no-repeat',backgroundSize: 'contain' }}>
       <NavBar navItems={navItems} />
       <div className="w-[394px] h-[1024px] text-[0px] bg-[rgba(20,26,46,1)] absolute top-0 left-0 z-[1]">
@@ -45,17 +51,7 @@ export default function Previous() {
       </button>
       
     </div>
-            )
-        }
-        {
-            currentView==="home"&&(
-            <MainPage/>
-            )
-        }
-          if(isClicked){
-    
-            <PdfReadandAsk/>
-            }
+     
     </div>
   
     );

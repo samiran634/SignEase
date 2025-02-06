@@ -10,6 +10,7 @@ const CoolBackground = styled.div`
   background-blend-mode: hard-light;
   background-color: rgba(1, 1, 1, 0.8);
   height: 100vh;
+ 
   overflow: hidden;
   display: flex;
   justify-content: center;

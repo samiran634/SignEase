@@ -9,7 +9,7 @@ export const NavBar = ({ siteName, navItems }) => {
       <div className="flex gap-6">
         {navItems.map((item, index) => (
           <button
-            key={index}
+            key={index} 
             onClick={item.onClick}
             aria-label={item.ariaLabel}
             className="text-white hover:text-gray-300 transition-colors"
