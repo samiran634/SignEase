@@ -25,15 +25,28 @@ git clone https://github.com/samiran634/SignEase.git
 ## Setting up MongoDB
 
 1. Navigate to the `mongoDb` folder:
+
    ```sh
    cd MongoDB
    ```
+
 2. Install dependencies:
+
    ```sh
    yarn install  # or npm install
    ```
-3. Start the MongoDB service locally.
-4. Make sure MongoDB is running on the default port (`27017`).
+
+3. create a folder named "files"
+
+4. To start the MongoDB service locally, run the following command:
+
+node ./app.js
+
+or, nodemon ./app,js
+
+
+
+1. Make sure MongoDB is running on the default port (`27017`).
 
 ## Setting up the Backend
 
