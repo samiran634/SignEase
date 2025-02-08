@@ -1,99 +1,186 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { NavBar } from "../common/NavBar";
 import talk_human from "../../assets/human/talk_human.png";
-import { NavBar } from "../landing/NavBar";
-import { useUser,UserProfile } from "@clerk/clerk-react";
-import Ongoing from "./ongoing";
-import Previous from "./previous";
-import {AboutPage} from '../about'  
-import HighlightPDF from "../loccked_components/add";
-const MainPage=()=>{
-  const [isPopedUp, setIsPopedUp]=useState(false)
-const [currentView, setCurrentView] = useState('main');
- 
-document.body.style.backgroundColor = 'white';
-document.body.style.backgroundImage = `url(${talk_human})`;
-document.body.style.backgroundRepeat = "no-repeat";
-document.body.style.backgroundSize = "contain";
-document.body.style.backgroundPosition = "center";
-document.body.style.backgroundAttachment = "fixed";
-const navItems = [
-  {
-    text: "profile",
-    onClick: () => setCurrentView('profile'),
-    ariaLabel: "login"
-  },
-  {
-    text: "About",
-    onClick: () =>  setCurrentView("about"),
-    ariaLabel: "about"
-  }
-]
-return(
-  <div>
-    {currentView==='main'&&(<>
-      <nav ><NavBar siteName="business_automation" navItems={navItems}/></nav>
-  <div className="main-container opacity-[1] relative overflow-hidden mx-auto my-0">
-    <div className="w-[940px] h-[318px] relative overflow-hidden z-[2] mt-[4em] mr-0 mb-0 ml-[166px] cursor-pointer" onClick={() => setCurrentView('previous')}>
-      <div className="w-[54em] h-[16em] bg-[#d9d9d9] rounded-[49px] absolute top-0 left-[13px]" />
-      <span className="flex w-[409px] h-[116px] justify-start items-start font-['Irish_Grover'] text-[48px] font-normal leading-[58.031px] text-[#000] absolute top-[43px] left-[53px] text-left overflow-hidden z-[2]">
-        previous contracts
-        <br />
-      </span>
-      <span className="flex h-[48px] justify-start items-start font-['Irish_Grover'] text-[40px] font-normal leading-[48px] text-[#000] absolute top-[159px] left-[53px] text-left whitespace-nowrap z-[2]">
-        here you will found your expired contracts
-      </span>
-    </div>
-    <div className="w-[934px] h-[307px] relative overflow-hidden z-[5] mt-[31px] mr-0 mb-0 ml-[176px] cursor-pointer" onClick={() => setCurrentView('ongoing')}> 
-      <div className="w-[54em] h-[15em] bg-[#d9d9d9] rounded-[49px] absolute top-[11px] left-[3px] z-[6]" />
-      <span className="flex h-[58px] justify-start items-start font-['Irish_Grover'] text-[48px] font-normal leading-[58px] text-[#000] absolute top-[62px] left-[52px] text-left whitespace-nowrap z-[8]">
-        current contracts
-      </span>
-      <span className="flex h-[58px] justify-start items-start font-['Irish_Grover'] text-[48px] font-normal leading-[58px] text-[#000] absolute top-[159px] left-[57px] text-left whitespace-nowrap z-[7]">
-        ongoing contracts are stored here
-      </span>
-    </div>
-    <div className="w-[54em] h-[15em] bg-[#d9d9d9] rounded-[49px] relative z-[1] mt-[42px] mr-0 mb-0 ml-[183px] cursor-pointer" onClick={() => setCurrentView('addnew')}>
-      <span  onClick={() => setIsPopedUp(true)} className="flex h-[58px] justify-start items-start font-['Irish_Grover'] text-[48px] font-normal leading-[58px] text-[#000] absolute top-[119px] left-[185px] text-left whitespace-nowrap z-[9]  cursor-pointer" >
-        addnew dontracts
-      </span>
-    </div>
-  </div>
-  {isPopedUp && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 bg-black bg-opacity-30 z-10"
-    >
-      <motion.div
-        initial={{ scale: 0.5 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0.5 }}
-        transition={{ duration: 0.5 }}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg"
-      >
-        <HighlightPDF />
-        <button
-          className="absolute top-0 right-0 p-2 bg-red-500 rounded-full"
-          onClick={() => setIsPopedUp(false)}
-        >
-          X
-        </button>
-      </motion.div>
-    </motion.div>
-  )}
+import { useUser, RedirectToSignIn } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
+import AddNewPdf from "./add";
 
-  </>
-)
-}
-{currentView === 'profile' && <div className="flex justify-center items-center h-screen   w-screen"><UserProfile /></div>}
-{currentView === 'about' && <AboutPage />}
-{currentView==="ongoing" && <Ongoing />}
-{currentView==="previous" && <Previous />}
- 
-</div>
-)
-}
+const MainPage = () => {
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const [isClicked, setIsClicked] = useState(false);
+
+  if (!user) {
+    return <RedirectToSignIn />;
+  }
+
+  const navItems = [
+    {
+      text: "Profile",
+      onClick: () => navigate("/profile"),
+      ariaLabel: "profile",
+    },
+    {
+      text: "About",
+      onClick: () => navigate("/about"),
+      ariaLabel: "about",
+    },
+  ];
+  
+
+  return (
+    <>
+      <div
+        className="  h-screen w-screen bg-white   px-6 flex"
+        style={{
+          backgroundImage: `url(${talk_human})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundPositionY: "center",
+          backgroundAttachment: "fixed",
+          flexDirection: "column",
+        }}
+      >
+        <nav className="w-full sticky top-0 z-10  backdrop-blur">
+          <NavBar siteName="signEase" navItems={navItems} />
+        </nav>
+
+        <div className="flex flex-direction-column gap-6 pt-12 relative mt-20 h-[50vh] w-[70%] ml-[25em]">
+          {/* Previous Contracts */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Previous Contracts
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                You will find all your previous contracts here.
+              </p>
+              <button
+                onClick={() => navigate("/previous")}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
+          </div>
+
+          {/* Ongoing Contracts */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Ongoing Contracts
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                You will find all your ongoing contracts here.
+              </p>
+              <button
+                onClick={() => navigate("/ongoing")}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
+          </div>
+
+          {/* Add New Contract */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Add New Contract
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                Drag and drop a new document or upload it from your device.
+              </p>
+              <button
+                onClick={() => setIsClicked(true)}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Popup Modal for Adding New PDF */}
+        {isClicked && (
+          <div className="modal-backdrop">
+            <div className="modal-content">
+             
+              <button onClick={() => setIsClicked(false)} className="close-btn top-0 right-0">
+                Close
+              </button>
+              <AddNewPdf isClicked={isClicked} setIsClicked={setIsClicked} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Tailwind CSS for modal styling */}
+      <style>
+        {`
+          .contract-card {
+            max-width: 280px;
+            width: 60%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+          }
+          .contract-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-color: #007bff;
+          }
+          .contract-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+          }
+          .contract-btn:hover {
+            background: linear-gradient(to right, #0056b3, #004494);
+          }
+          .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+          }
+          .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+          }
+          .close-btn {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            background: red;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+          }
+        `}
+      </style>
+    </>
+  );
+};
+
 export default MainPage;

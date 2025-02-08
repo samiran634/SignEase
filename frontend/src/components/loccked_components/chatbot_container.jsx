@@ -1,36 +1,48 @@
-import React from "react";
- 
+import React, { useState } from "react";
 
-export default function chatbot_container() {
+export default function ChatbotContainer() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    setMessages([...messages, { text: input, sender: "user" }]);
+    setInput("");
+  };
+
   return (
-    <div className="main-container w-[680px] h-[927px] rounded-[2px] relative overflow-hidden mx-auto my-0">
-      <div className="w-[64px] h-[65px] bg-[#d9d9d9] rounded-[20px] relative z-[5] mt-[35px] mr-0 mb-0 ml-[804px]" />
-      <div className="w-[630px] h-[793px] relative z-[4] mt-0 mr-0 mb-0 ml-[40px]">
-        <button className="w-[242px] h-[70px] bg-[#d9d9d9] rounded-[54px] border-none relative z-[1] pointer mt-[216px] mr-0 mb-0 ml-[388px]">
-          <span className="flex h-[39px] justify-start items-start font-['Irish_Grover'] text-[32px] font-normal leading-[38.688px] text-[#000] absolute top-[16px] left-[70px] text-left whitespace-nowrap z-[6]">
-            some text
-          </span>
+    <div className="flex flex-col w-full max-w-md h-full md:h-[90vh] mx-auto bg-white shadow-lg rounded-lg border border-gray-300 mt-20">
+      {/* Chat messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-100">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`p-2 rounded-lg w-fit max-w-[80%] ${
+              msg.sender === "user"
+                ? "bg-blue-500 text-white self-end ml-auto"
+                : "bg-gray-300 text-black"
+            }`}
+          >
+            {msg.text}
+          </div>
+        ))}
+      </div>
+
+      {/* Input field */}
+      <div className="p-3 border-t flex items-center bg-white">
+        <input
+          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Have questions? Ask here..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+        />
+        <button
+          className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          onClick={sendMessage}
+        >
+          Send
         </button>
-        <div className="w-[281px] h-[243px] bg-[#d9d9d9] rounded-[60px] relative z-[4] mt-[61px] mr-0 mb-0 ml-0">
-          <span className="flex w-[195px] h-[168px] justify-start items-start font-['Irish_Grover'] text-[32px] font-normal leading-[38.688px] text-[#000] absolute top-[37px] left-[67px] text-left overflow-hidden z-[7]">
-            some text
-            <br />
-            sometext
-            <br />
-            some text
-            <br />
-            sometext
-          </span>
-        </div>
-        <button className="w-[604px] h-[105px] bg-[#d9d9d9] rounded-[66px] border-none relative pointer mt-[98px] mr-0 mb-0 ml-[12px]">
-          <span className="flex h-[39px] justify-start items-start font-['Irish_Grover'] text-[32px] font-normal leading-[38.688px] text-[#000] absolute top-[33px] left-[102px] text-left whitespace-nowrap z-[8]">
-            sometext sometext sometext
-          </span>
-        </button>
-        <div className="w-[230px] h-[189px] bg-[#d9d9d9] rounded-[54px] absolute top-0 left-[12px] z-[2]" />
-        <span className="flex w-[208px] h-[76px] justify-start items-start font-['Irish_Grover'] text-[32px] font-normal leading-[38.688px] text-[#000] absolute top-[10px] left-[37px] text-left z-[3]">
-          what would you like to ask about this aggriment
-        </span>
       </div>
     </div>
   );

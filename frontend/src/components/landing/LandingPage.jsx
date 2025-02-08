@@ -1,25 +1,74 @@
-import React, { useState, useEffect } from 'react'
-import { NavBar } from './NavBar'
+import React, { useState, useEffect, useRef } from 'react'
+import { NavBar } from '../common/NavBar'
 import { HeroImage } from './HeroImage'
 import { HeroContent } from './HeroContent'
-import Login from '../user/login'
- import Lenis from 'lenis'
- import RollerBackground from './roller'
- import {useUser } from 
- "@clerk/clerk-react";
- import MainPage from '../loccked_components/mainpage'
-import {AboutPage} from '../about'
+import { useNavigate } from 'react-router-dom';
+import Lenis from 'lenis'
+import RollerBackground from './roller'
+import {useUser} from 
+"@clerk/clerk-react";
 
 export const LandingPage = () => {
-  const [currentView, setCurrentView] = useState('landing');
-  const [showMain, setShowMain] = useState(false);
+  const navigate = useNavigate();
+const navItems = [
+  {
+    text: "Login",
+    onClick: () => navigate('/login'),
+    ariaLabel: "login"
+  },
+  {
+    text: "About",
+    onClick: () => navigate('/about'),
+    ariaLabel: "about"
+  }
+]
+
+ 
+  const [showMain, setShowMain] = useState(true);
   const [showRoller, setShowRoller] = useState(false);
   const user= useUser().user;
+  const headerRef = useRef(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const [headerOpacity, setHeaderOpacity] = useState(1);
+  const [mainOpacity, setMainOpacity] = useState(0);
 
+  useEffect(() => {
+    if(user){
+      navigate('/home');
+    }
+  }, [user,navigate]);
+
+  useEffect(() => {
+    if (headerRef.current) {
+      setHeaderHeight(headerRef.current.offsetHeight);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!showMain) {
+      const scrollY = window.scrollY;
+      const threshold = headerHeight * 0.5;
+
+      if (scrollY <= threshold) {
+        const opacity = 1 - (scrollY / threshold);
+        setHeaderOpacity(opacity);
+        setMainOpacity(0);
+      } else {
+        setHeaderOpacity(0);
+        setMainOpacity(1);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [headerHeight]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showMain&&window.scrollY > 100) {
+        setShowMain(false);
+      }
+      if(!showMain&&window.scrollY <= 100) {
         setShowMain(true);
       }
       if (!showRoller && window.scrollY > 100) { 
@@ -38,7 +87,6 @@ export const LandingPage = () => {
   // Initialize Lenis
 const lenis = new Lenis({
   duration:5,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 }
 );
 
@@ -50,28 +98,18 @@ function raf(time) {
 console.log(user);
 
 requestAnimationFrame(raf);
-if(!user){
-//  alert("1 condition encountered")
-  const navItems = [
-    {
-      text: "Login",
-      onClick: () => setCurrentView('login'),
-      ariaLabel: "login"
-    },
-    {
-      text: "About",
-      onClick: () =>  setCurrentView("about"),
-      ariaLabel: "about"
-    }
-  ]
+ 
+
   return (
     <div
       className="flex flex-col pt-10 py-10 px-10 w-full min-h-screen max-md:px-5 max-md:max-w-full font-irish-grover"
     >
-      {currentView === 'landing' && (
-        <>
-          <NavBar siteName="business_automation" navItems={navItems} />
-          <header className="flex flex-wrap gap-10 mt-5 text-5xl text-white max-md:mt-10 max-md:max-w-full max-md:text-4xl">
+          <NavBar siteName="signEase" navItems={navItems} />
+          <header
+            ref={headerRef}
+            style={{ opacity: headerOpacity }}
+            className={`flex flex-wrap gap-10 mt-5 text-5xl text-white max-md:mt-10 max-md:max-w-full max-md:text-4xl ${showRoller ? 'opacity-0 transition-opacity duration-1000' : 'opacity-100'}`}
+          >
             <HeroImage
               src="/hero_image.png"
               alt="hero_image"
@@ -82,19 +120,10 @@ if(!user){
               titleId="understand and make deal with AI"
             />
           </header>
-          <main className={`mt-10 ${showRoller ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'}`}>
+          <main style={{ opacity: mainOpacity }} className={`mt-10 ${showRoller ? 'opacity-100 transition-opacity duration-1000' : 'opacity-0'}`}>
             <RollerBackground/>
           </main>
-        </>
-      )}
-      {currentView === 'login' && <Login/>}
-      {currentView==="about"&&<AboutPage/>}
     </div>
   )
-}else if(user) {
-  // alert("2 condition encountered")
-  return(<MainPage/>)
-}else {
-  alert("please login")
-}
+ 
 }
