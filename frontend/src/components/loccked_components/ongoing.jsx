@@ -1,54 +1,70 @@
-import React from "react";
-import docs_background from "../../assets/human/docs_background.png";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import CardComponent from "../common/card";
 import { NavBar } from "../common/NavBar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useUser, RedirectToSignIn } from "@clerk/clerk-react";
-
+import { pdfjs } from "react-pdf";
 export default function OngoingPage() {
   const navigate = useNavigate();
   const { user } = useUser();
-
+  const [pdfData, setPdfData] = useState([]);
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    "pdfjs-dist/build/pdf.worker.min.js",
+    import.meta.url
+  ).toString();
+  
   if (!user) {
     return <RedirectToSignIn />;
   }
 
+  useEffect(() => {
+    async function fetchPdfData() {
+      try {
+        const response = await axios.get("http://localhost:5000/get-files");
+        setPdfData(response.data.data); // Assuming response.data is an array of PDFs
+      } catch (error) {
+        console.error("Error fetching PDF data:", error);
+      }
+    }
+    fetchPdfData();
+  }, []);
+
   const navItems = [
     {
       text: "home",
-      onClick: () => navigate('/home'),
-      ariaLabel: "home"
+      onClick: () => navigate("/home"),
+      ariaLabel: "home",
     },
     {
       text: "profile",
-      onClick: () => navigate('/profile'),
-      ariaLabel: "profile"
+      onClick: () => navigate("/profile"),
+      ariaLabel: "profile",
     },
     {
       text: "About",
-      onClick: () => navigate('/about'),
-      ariaLabel: "about"
-    }
+      onClick: () => navigate("/about"),
+      ariaLabel: "about",
+    },
   ];
 
   return (
-    <div style={{ 
-      backgroundImage: `url(${docs_background})`, 
-      backgroundRepeat: "no-repeat", 
-      backgroundSize: "contain", 
-      backgroundPosition: "center", 
-      backgroundAttachment: "fixed",
-      width: '100vw',
-      height: '100vh'
-    }}>
-      <div className="main-container w-screen h-screen relative overflow-hidden mx-auto my-0 z-index-99">
-        <div className="flex w-[548px] h-[67px] justify-between items-center relative z-[18] mt-[24px] mr-0 mb-0 ml-[845px]">
-          <NavBar navItems={navItems} />
+    <div>
+      <div className="main-container w-screen h-screen bg-white relative  overflow-x-hidden mx-auto my-0 px-6">
+        <nav className="w-full sticky top-0 z-10 backdrop-blur">
+          <NavBar siteName="signEase" navItems={navItems} />
+        </nav>
+        {/* Generate Cards Based on PDF Data */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
+          {pdfData.map((pdf, index) => (
+            <CardComponent 
+              key={index}
+              TitleText={pdf.title}  // Using dynamic title from API response
+              SubtitleText="Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order." 
+              Indecator={pdf._id}
+            />
+          ))}
         </div>
-        <button className="w-[492px] h-[111px] bg-[#d9d9d9] rounded-[57px] border-none relative z-[5] pointer mt-[41px] mr-0 mb-0 ml-[170px]">
-          <span className="flex h-[39px] justify-start items-start font-['Irish_Grover'] text-[32px] font-normal leading-[38.688px] text-[#000] absolute top-[41px] left-[104px] text-left whitespace-nowrap z-[5]">
-            smaple contract
-          </span>
-        </button>
       </div>
     </div>
   );

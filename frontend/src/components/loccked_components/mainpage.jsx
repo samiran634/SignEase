@@ -1,91 +1,184 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { NavBar } from "../common/NavBar";
-import  talk_human from "../../assets/human/talk_human.png";
+import talk_human from "../../assets/human/talk_human.png";
 import { useUser, RedirectToSignIn } from "@clerk/clerk-react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import AddNewPdf from "./add";
 
 const MainPage = () => {
   const navigate = useNavigate();
   const { user } = useUser();
+  const [isClicked, setIsClicked] = useState(false);
 
   if (!user) {
-    return (<RedirectToSignIn />);
+    return <RedirectToSignIn />;
   }
 
   const navItems = [
     {
-      text: "profile",
-      onClick: () => navigate('/profile'),
-      ariaLabel: "login"
+      text: "Profile",
+      onClick: () => navigate("/profile"),
+      ariaLabel: "profile",
     },
     {
       text: "About",
       onClick: () => navigate("/about"),
-      ariaLabel: "about"
-    }
+      ariaLabel: "about",
+    },
   ];
-
-  document.body.style.backgroundColor = 'white';
-  document.body.style.backgroundImage = `url(${talk_human})`;
-  document.body.style.backgroundRepeat = "no-repeat";
-  document.body.style.backgroundSize = "contain";
-  document.body.style.backgroundPositionY = "center";
-  document.body.style.backgroundAttachment = "fixed";
+  
 
   return (
     <>
-      <nav className="absolute top-0 w-[90vw] my-4 mr-20"><NavBar siteName="business_automation" navItems={navItems} /></nav>
-      <div className="main-container w-[70%] bg-transparent absolute overflow-hidden mx-auto top-4 right-0 px-6 flex flex-wrap gap-8 pt-10 mt-[6em]">
-        <div className="max-w-sm w-full sm:w-1/2 md:w-1/3 lg:w-1/4 rounded overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:border-2 hover:border-zinc-800">
-          <div className="px-6 py-4">
-            <div className="text-black font-bold text-xl mb-2">Previous Contracts</div>
-            <p className="text-gray-700 text-base">
-              You will find all your previous contracts here. Those are mainly those which are signed or expired.
-            </p>
+      <div
+        className="  h-screen w-screen bg-white   px-6 flex"
+        style={{
+          backgroundImage: `url(${talk_human})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundPositionY: "center",
+          backgroundAttachment: "fixed",
+          flexDirection: "column",
+        }}
+      >
+        <nav className="w-full sticky top-0 z-10  backdrop-blur">
+          <NavBar siteName="signEase" navItems={navItems} />
+        </nav>
+
+        <div className="flex flex-direction-column gap-6 pt-12 relative mt-20 h-[50vh] w-[70%] ml-[25em]">
+          {/* Previous Contracts */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Previous Contracts
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                You will find all your previous contracts here.
+              </p>
+              <button
+                onClick={() => navigate("/previous")}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
           </div>
-          <div className="px-6 pt-4 pb-2">
-            <a onClick={() => navigate('/previous')} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800">
-              Let's Go
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
+
+          {/* Ongoing Contracts */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Ongoing Contracts
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                You will find all your ongoing contracts here.
+              </p>
+              <button
+                onClick={() => navigate("/ongoing")}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
+          </div>
+
+          {/* Add New Contract */}
+          <div className="contract-card">
+            <div className="p-5">
+              <div className="text-black font-bold text-lg mb-2">
+                Add New Contract
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                Drag and drop a new document or upload it from your device.
+              </p>
+              <button
+                onClick={() => setIsClicked(true)}
+                className="contract-btn"
+              >
+                Let's Go
+              </button>
+            </div>
           </div>
         </div>
-        <div className="max-w-sm w-full sm:w-1/2 md:w-1/3 lg:w-1/4 rounded overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:border-2 hover:border-zinc-500">
-          <div className="px-6 py-4">
-            <div className="text-black font-bold text-xl mb-2">ongoing Contracts</div>
-            <p className="text-gray-700 text-base">
-              You will find all your ongoing contracts here. Those are mainly those which are not yet signed or not expired.
-            </p>
+
+        {/* Popup Modal for Adding New PDF */}
+        {isClicked && (
+          <div className="modal-backdrop">
+            <div className="modal-content">
+             
+              <button onClick={() => setIsClicked(false)} className="close-btn top-0 right-0">
+                Close
+              </button>
+              <AddNewPdf isClicked={isClicked} setIsClicked={setIsClicked} />
+            </div>
           </div>
-          <div className="px-6 pt-4 pb-2">
-            <a onClick={() => navigate('/ongoing')} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Let's Go
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div className="max-w-sm w-full sm:w-1/2 md:w-1/3 lg:w-1/4 rounded overflow-hidden shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl hover:border-2 hover:border-zinc-800">
-          <div className="px-6 py-4">
-            <div className="text-black font-bold text-xl mb-2">add new Contract</div>
-            <p className="text-gray-700 text-base">
-              drag and drop new file document or upload form local mechine
-            </p>
-          </div>
-          <div className="px-6 pt-4 pb-2">
-            <a onClick={() => navigate('/contracts')} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              Let's Go
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-              </svg>
-            </a>
-          </div>
-        </div>
+        )}
       </div>
+
+      {/* Tailwind CSS for modal styling */}
+      <style>
+        {`
+          .contract-card {
+            max-width: 280px;
+            width: 60%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+          }
+          .contract-card:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-color: #007bff;
+          }
+          .contract-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+          }
+          .contract-btn:hover {
+            background: linear-gradient(to right, #0056b3, #004494);
+          }
+          .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+          }
+          .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+          }
+          .close-btn {
+            margin-top: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            background: red;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+          }
+        `}
+      </style>
     </>
   );
 };

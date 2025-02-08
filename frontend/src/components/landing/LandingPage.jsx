@@ -87,7 +87,6 @@ const navItems = [
   // Initialize Lenis
 const lenis = new Lenis({
   duration:5,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
 }
 );
 
@@ -105,7 +104,7 @@ requestAnimationFrame(raf);
     <div
       className="flex flex-col pt-10 py-10 px-10 w-full min-h-screen max-md:px-5 max-md:max-w-full font-irish-grover"
     >
-          <NavBar siteName="business_automation" navItems={navItems} />
+          <NavBar siteName="signEase" navItems={navItems} />
           <header
             ref={headerRef}
             style={{ opacity: headerOpacity }}

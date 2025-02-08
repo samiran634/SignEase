@@ -10,7 +10,7 @@
   font-weight: 400;
   margin:0;
   padding:0;
-  box-sizing: border-box;
+   box-sizing: border-box; 
   background-image: linear-gradient(45deg, #060606, #2f38bb9c);
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -38,9 +38,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+ 
+  
   background-color: transparent;
 }
 
@@ -79,4 +78,9 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
