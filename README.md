@@ -1,12 +1,15 @@
 # Project Setup Guide
 
 This guide will help you set up and run the application on your local machine. The project consists of three folders:
+
 - `frontend` (React application)
 - `backend` (Go API server)
 - `mongoDb` (MongoDB setup with Node.js)
 
 ## Prerequisites
+
 Make sure you have the following installed on your system:
+
 - [Go](https://go.dev/dl/) (Latest stable version)
 - [Node.js](https://nodejs.org/) (For MongoDB setup)
 - [MongoDB](https://www.mongodb.com/try/download/community)
@@ -14,15 +17,16 @@ Make sure you have the following installed on your system:
 - [Yarn](https://yarnpkg.com/) (or npm)
 
 ## Clone the Repository
+
 ```sh
-git clone <your-repository-url>
-cd <your-project-folder>
+git clone https://github.com/samiran634/SignEase.git
 ```
 
 ## Setting up MongoDB
+
 1. Navigate to the `mongoDb` folder:
    ```sh
-   cd mongoDb
+   cd MongoDB
    ```
 2. Install dependencies:
    ```sh
@@ -32,6 +36,7 @@ cd <your-project-folder>
 4. Make sure MongoDB is running on the default port (`27017`).
 
 ## Setting up the Backend
+
 1. Navigate to the `backend` folder:
    ```sh
    cd ../backend
@@ -44,7 +49,6 @@ cd <your-project-folder>
    ```env
    PORT=5000
    MONGO_URI=mongodb://localhost:27017/your_database_name
-   OPENAI_API_KEY=your_openai_api_key
    ```
 4. Start the backend server:
    ```sh
@@ -53,6 +57,7 @@ cd <your-project-folder>
    The backend will run on `http://localhost:5000/`.
 
 ## Setting up the Frontend
+
 1. Navigate to the `frontend` folder:
    ```sh
    cd ../frontend
@@ -72,20 +77,26 @@ cd <your-project-folder>
    The frontend will run on `http://localhost:5173/` (or the default Vite port).
 
 ## Running the Application
+
 Once all services are running, open your browser and visit:
+
 ```sh
 http://localhost:5173/
 ```
+
 Your application should now be up and running!
 
 ## Troubleshooting
+
 - **Backend not connecting to MongoDB?** Check if MongoDB is running and that the `MONGO_URI` in `.env` is correct.
 - **Frontend not fetching data?** Ensure the backend is running and CORS is correctly configured.
 - **Port conflicts?** Change the default ports in the `.env` files if needed.
 
 ## Contributing
+
 Feel free to open a pull request if you find any issues or improvements!
 
 ---
+
 Happy coding! 🚀
 
