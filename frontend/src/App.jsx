@@ -7,6 +7,8 @@ import AboutPage from './components/common/about'
 import PreviousPage from './components/loccked_components/previous'
 import OngoingPage from './components/loccked_components/ongoing'
 import PdfReadandAsk from './components/loccked_components/viewPdf'
+import ProfilePage from './components/user/profile'
+import SignOutPage from './components/user/logout'
 function App() {
   return (
     < BrowserRouter>
@@ -19,6 +21,8 @@ function App() {
         <Route path="/previous" element={<PreviousPage />} />
         <Route path="/ongoing" element={<OngoingPage />} />
         <Route path="/read" element={<PdfReadandAsk/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
+        <Route path='/logout' element={<SignOutPage/>}/>
       </Routes>
     </BrowserRouter>
   )
