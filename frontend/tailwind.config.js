@@ -75,8 +75,28 @@ module.exports = {
       },
     },
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
+    perspective: {
+      '1000': '1000px',
+    },
+    rotate: {
+      'y-180': 'rotateY(180deg)',
+    },
+    transitionProperty: {
+      'transform': 'transform',
+    },
+    transitionDuration: {
+      '500': '500ms',
+    },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [require("tailwind-scrollbar-hide"),
+    function({ addUtilities }) {
+      addUtilities({
+        '.backface-hidden': { 
+          'backface-visibility': 'hidden',
+        },
+      });
+    }
+  ],
   darkMode: ["class"],
 };
 

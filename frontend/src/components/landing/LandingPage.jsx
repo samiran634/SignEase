@@ -33,6 +33,16 @@ export const LandingPage = () => {
   const [headerOpacity, setHeaderOpacity] = useState(1);
   const [footerOpacity, setFooterOpacity] = useState(0);
 
+  const sectionRefs = {
+    hero: useRef(null),
+    main: useRef(null),
+    footer: useRef(null),
+  };
+
+  const scrollToSection = (section) => {
+    sectionRefs[section].current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     if (user) {
       navigate("/home");
@@ -98,16 +108,16 @@ export const LandingPage = () => {
       <NavBar
         siteName="signEase"
         navItems={[
+          { text: "about", onClick: () => scrollToSection("main"), ariaLabel: "about" },
+          { text: "contact", onClick: () => scrollToSection("footer"), ariaLabel: "contact" },
           { text: "Login", onClick: () => navigate("/login"), ariaLabel: "login" },
-          { text: "About", onClick: () => navigate("/about"), ariaLabel: "about" },
-          { text: "Contact", onClick: () => navigate("/contact"), ariaLabel: "contact" }
         ]}
-        className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-md"
+        className="sticky top-0 z-9999 bg-white/80 backdrop-blur-md shadow-md"
       />
 
       {/* Hero Section */}
       <header
-        ref={headerRef}
+        ref={sectionRefs.hero}
         style={{ opacity: headerOpacity, transition: "opacity 0.5s ease-in-out" }}
         className={`flex flex-wrap gap-10 mt-5 text-5xl text-white max-md:mt-10 max-md:max-w-full max-md:text-4xl ${
           showRoller ? "opacity-0" : "opacity-100"
@@ -118,19 +128,17 @@ export const LandingPage = () => {
       </header>
 
       {/* Main Content */}
-      <main className="mt-40 flex justify-center flex-col h-screen w-screen">
-        <div ref={textRef} className="opacity-1 flex text-center justify-center">
-          <h1 className="text-4xl font-bold">
+      <main
+        ref={sectionRefs.main}
+        aria-label="main"
+        className="mt-40 flex justify-center flex-col h-screen w-screen max-md:mt-20 max-md:w-full"
+      >
+        <div ref={textRef} className="opacity-1 flex text-center justify-center max-md:flex-col">
+          <h1 className="text-4xl font-bold max-md:text-2xl">
             {"What you can expect".split("").map((word, index) => (
-              <motion.span
-                key={index}
-                className="mr-2 mt-4"
-                initial={{ opacity: 0, y: 10 }}
-                animate={isTextInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.3 }}
-              >
+              <span key={index} className="inline-block">
                 {word}
-              </motion.span>
+              </span>
             ))}
           </h1>
         </div>
@@ -141,7 +149,9 @@ export const LandingPage = () => {
           {/* Left Arrow */}
           <button
             className="absolute left-36 top-1/2 transform -translate-y-1/2 p-3 bg-gray-700 text-white rounded-full shadow-md 
-                   hover:bg-gray-800 transition-all duration-300 z-10"
+                   hover:bg-gray-800 transition-all duration-300 z-10
+                   md:left-36 md:top-1/2 md:transform md:-translate-y-1/2
+                   max-md:left-5  max-md:transform-none"
             onClick={() => scroll("left")}
           >
             <FaChevronLeft size={20} />
@@ -163,7 +173,9 @@ export const LandingPage = () => {
           {/* Right Arrow */}
           <button
             className="absolute right-36 top-1/2 transform -translate-y-1/2 p-3 bg-gray-700 text-white rounded-full shadow-md 
-                   hover:bg-gray-800 transition-all duration-300 z-10"
+                   hover:bg-gray-800 transition-all duration-300 z-10
+                   md:right-36 md:top-1/2 md:transform md:-translate-y-1/2
+                   max-md:right-5 max-md:transform-none"
             onClick={() => scroll("right")}
           >
             <FaChevronRight size={20} />
@@ -172,9 +184,9 @@ export const LandingPage = () => {
       </main>
       {/* Footer */}
       <footer
-        ref={footerRef}
+        ref={sectionRefs.footer}
         style={{ opacity: footerOpacity, transition: "opacity 0.5s ease-in-out" }}
-        className="bg-gray-800 text-white py-12 px-6 mt-10"
+        className="bg-gray-800 text-white py-12 px-6 mt-10 max-md:py-6 max-md:px-3"
       >
        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         
@@ -221,21 +233,21 @@ export const LandingPage = () => {
 
       {/* Footer Bottom: Social Links */}
       <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400">
-        <p>© {new Date().getFullYear()} SignEase. All rights reserved.</p>
-        <div className="flex gap-4 mt-4 md:mt-0">
-          <a href="#" className="hover:text-blue-500">
+        <div className="flex gap-4 mt-4 md:mt-0 max-md:flex-col max-md:items-center">
+          <a href="#" className="hover:text-blue-500 max-md:mb-2">
             <FaFacebook size={24} />
           </a>
-          <a href="#" className="hover:text-blue-400">
+          <a href="#" className="hover:text-blue-500 max-md:mb-2">
             <FaTwitter size={24} />
           </a>
-          <a href="#" className="hover:text-pink-500">
+          <a href="#" className="hover:text-blue-500 max-md:mb-2">
             <FaInstagram size={24} />
           </a>
-          <a href="#" className="hover:text-red-600">
+          <a href="#" className="hover:text-blue-500 max-md:mb-2">
             <FaYoutube size={24} />
           </a>
         </div>
+        <p className="text-gray-400 max-md:mt-4"> 2023 SignEase. All rights reserved.</p>
       </div>
       </footer>
     </div>
