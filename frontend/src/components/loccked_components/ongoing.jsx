@@ -4,15 +4,12 @@ import CardComponent from "../common/card";
 import { NavBar } from "../common/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useUser, RedirectToSignIn } from "@clerk/clerk-react";
-import { pdfjs } from "react-pdf";
+  
 export default function OngoingPage() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [pdfData, setPdfData] = useState([]);
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.js",
-    import.meta.url
-  ).toString();
+ 
   
   if (!user) {
     return <RedirectToSignIn />;
@@ -22,7 +19,7 @@ export default function OngoingPage() {
     async function fetchPdfData() {
       try {
         const response = await axios.get("http://localhost:5000/get-files");
-        setPdfData(response.data.data); // Assuming response.data is an array of PDFs
+        setPdfData(response.data.data); //  response.data.data is an array of PDFs
       } catch (error) {
         console.error("Error fetching PDF data:", error);
       }
@@ -54,7 +51,7 @@ export default function OngoingPage() {
         <nav className="w-full sticky top-0 z-10 backdrop-blur">
           <NavBar siteName="signEase" navItems={navItems} />
         </nav>
-        {/* Generate Cards Based on PDF Data */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
           {pdfData.map((pdf, index) => (
             <CardComponent 
