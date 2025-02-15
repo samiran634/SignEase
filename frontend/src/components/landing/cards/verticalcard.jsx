@@ -10,7 +10,7 @@ export function CardDefault({ Title, SubTitle, Image }) {
                  transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 
                  hover:scale-105 cursor-pointer dark:bg-gray-800 dark:border-gray-700"
     >
-      <img className="w-full h-48 object-cover" src={`../../../assets/human/${Image}`} alt="Card" />
+      <img className="w-full h-48 object-cover" src={Image} alt="Card" />
 
       <div className="p-5 flex flex-col justify-between h-[calc(100%-12rem)]">
         <h5 className="text-xl font-semibold text-gray-900 dark:text-white">

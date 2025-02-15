@@ -12,11 +12,11 @@ import { FaChevronLeft, FaChevronRight, FaFacebook, FaTwitter, FaInstagram, FaYo
 
 // Sample Card Data
 const items = [
-  { title: "Streamline Your Workflow", subtitle: "Optimize and automate your business processes effortlessly.", image: "automate_business.png" },
-  { title: "AI-Powered Insights", subtitle: "Leverage artificial intelligence to make data-driven decisions.", image: "" },
-  { title: "Secure Digital Agreements", subtitle: "Sign, store, and manage contracts with industry-leading security.", image: "" },
-  { title: "Seamless Collaboration", subtitle: "Work together in real-time with built-in team management tools.", image: "" },
-  { title: "Effortless Document Management", subtitle: "Upload, organize, and retrieve files instantly from anywhere.", image: "effortless.png" },
+  { title: "Streamline Your Workflow", subtitle: "Optimize and automate your business processes effortlessly.", image: "/automate_business.png" },
+  { title: "AI-Powered Insights", subtitle: "Leverage artificial intelligence to make data-driven decisions.", image: "/ai_insights.png" },
+  { title: "Secure Digital Agreements", subtitle: "Sign, store, and manage contracts with industry-leading security.", image: "/secure.png" },
+  { title: "Seamless Collaboration", subtitle: "Work together in real-time with built-in team management tools.", image: "/togather.png" },
+  { title: "Effortless Document Management", subtitle: "Upload, organize, and retrieve files instantly from anywhere.", image: "/effortless.png" },
 ];
 
 export const LandingPage = () => {
