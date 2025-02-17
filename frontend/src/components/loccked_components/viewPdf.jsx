@@ -67,7 +67,7 @@ const navigate=useNavigate();
           </div>
   
           {/* Chatbot Section (Fixing Visibility) */}
-          <div className="w-[30%] h-full border-l border-gray-300 bg-gray-100 flex flex-col">
+          <div className="w-[30%] h-[75%] border-l border-gray-300 bg-gray-100 flex flex-col mb-0">
             <ChatbotContainer />
           </div>
         </div>

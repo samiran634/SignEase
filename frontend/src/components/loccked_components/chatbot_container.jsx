@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function ChatbotContainer() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-
+  
   const sendMessage = () => {
     if (!input.trim()) return;
     setMessages([...messages, { text: input, sender: "user" }]);
