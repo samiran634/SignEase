@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function AddNewPdf( ) {
+function AddNewPdf() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
 
@@ -24,9 +24,12 @@ function AddNewPdf( ) {
 
       console.log(result);
 
-      if (result.status === 200) {
+      if (result.status === 201) {  
         alert("Uploaded Successfully!");
-         
+ 
+        setTitle("");
+        setFile(null);
+        document.getElementById("file").value = "";
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -35,7 +38,7 @@ function AddNewPdf( ) {
   };
 
   return (
-    <div className= "flex">
+    <div className="flex">
       <form className="formStyle" onSubmit={submitImage}>
         <br />
         <div className="flex gap-1 ml-10">
@@ -53,7 +56,7 @@ function AddNewPdf( ) {
           <div className="mb-3">
             <input
               type="file"
-              className="form-control bg-black"
+              className="form-control" // ✅ Fix: Removed bg-black for better visibility
               accept="application/pdf"
               required
               onChange={(e) => setFile(e.target.files[0])}

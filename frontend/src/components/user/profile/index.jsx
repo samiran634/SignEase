@@ -1,6 +1,8 @@
 import { RedirectToSignIn, useUser,UserProfile } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import React,{useState} from "react";
+import { dark } from "@clerk/themes";
+
  const ProfilePage=(props)=>{
     const user=useUser();
     if(!user){
@@ -13,13 +15,10 @@ import React,{useState} from "react";
 <div className="mt-16 w-screen h-screen flex justify-center items-center bg-white">
   <UserProfile 
     appearance={{
-      elements: {
-        rootBox: "w-full h-full flex justify-center items-center p-6 mt-10 relative", // Padding inside root container
-        card: "w-full max-w-2xl h-full max-h-screen p-8 shadow-lg rounded-lg bg-white", // Card padding and background
-        headerTitle: "text-2xl font-bold mb-4", // Bigger header with margin-bottom
-        profileSectionTitle: "text-xl font-bold mt-4 mb-2", // Space above and below section titles
-        profileSectionContent: "text-lg p-2", // Larger font and padding for readability
-      },
+      baseTheme:dark,
+      variables:{
+        fontWeight:"bold",
+      }
     }} 
   />
        <button 

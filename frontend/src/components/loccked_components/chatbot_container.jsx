@@ -1,13 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ChatbotContainer() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  
-  const sendMessage = () => {
+
+  // Function to send message and get a response from the chatbot
+  const sendMessage = async () => {
     if (!input.trim()) return;
-    setMessages([...messages, { text: input, sender: "user" }]);
+
+    const newMessages = [...messages, { text: input, sender: "user" }];
+    setMessages(newMessages);
     setInput("");
+
+    try {
+      const ques=JSON.stringify(input);
+      console.log( ques);
+      const response = await axios.post(`http://localhost:8080/ask`, {Headers:
+        {
+          'content-type': "application/json",
+        },
+          body:JSON.stringify({
+            question:  input
+          }),
+      });
+
+      console.log("Chatbot Response:", response.data);
+
+      setMessages([...newMessages, { text: response.data, sender: "bot" }]);
+    } catch (error) {
+      console.error("Error fetching chatbot response:", error);
+    }
   };
 
   return (
@@ -35,7 +58,7 @@ export default function ChatbotContainer() {
           placeholder="Have questions? Ask here..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyUpCapture={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
           className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"

@@ -22,8 +22,8 @@ import { NavBar } from './NavBar';
       ]
  
     return(
-        <div>
-            <NavBar navItems={navItems}/>
+        <div className='h-screen w-screen bg-white flex flex-col'>
+            <NavBar siteName={"siginEase"} navItems={navItems} className ="w-screen"/>
             <h1>About Page</h1>
         </div>
     )

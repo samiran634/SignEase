@@ -38,13 +38,15 @@ const MainPage = () => {
   return (
     <>
       <div
-        className="  h-screen w-screen bg-white   px-6 flex"
+        className="  h-screen w-screen bg-gradient-to-tr from-blue-600 to-transparent
+
+  "
         style={{
           backgroundImage: `url(${talk_human})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
           backgroundPositionY: "center",
-          backgroundAttachment: "fixed",
+         
           flexDirection: "column",
         }}
       >
@@ -52,11 +54,11 @@ const MainPage = () => {
           <NavBar siteName="signEase" navItems={navItems} />
         </nav>
 
-        <div className="flex flex-direction-column gap-6 pt-12 relative mt-20 h-[50vh] w-[70%] ml-[25em]">
+        <div className="flex flex-direction-column gap-6 pt-12 relative mt-20 h-[50vh] w-[70%] ml-[25em]  sm:ml-[10em] md:ml-[15em] lg:ml-[20em] xl:ml-[25em] 2xl:ml-[30em] animate-float1"> 
           {/* Previous Contracts */}
-          <div className="contract-card">
+          <div className="contract-card animate-float2">
             <div className="p-5">
-              <div className="text-black font-bold text-lg mb-2">
+              <div className="text-black font-bold text-lg mb-2 animate-float3">
                 Previous Contracts
               </div>
               <p className="text-gray-600 text-sm mb-4">
