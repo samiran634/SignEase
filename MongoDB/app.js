@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const multer = require("multer");
 const fs = require("fs");
 const { MongoClient, GridFSBucket, ObjectId } = require("mongodb");
+const RateLimit = require('express-rate-limit');
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,12 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+// Rate Limiter Setup
+const limiter = RateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // max 100 requests per windowMs
+});
 
 // Multer Setup
 const upload = multer({ dest: "uploads/" });
@@ -40,10 +47,10 @@ connectDB().then(database => {
     console.log(`Server started on http://localhost:${PORT}`);
   });
 
-  app.get("/", (req, res) => res.send("Success!!!!!!"));
+  app.get("/", limiter, (req, res) => res.send("Success!!!!!!"));
 
   // Upload File to Organization-Specific Bucket
-  app.post('/upload/:orgName', upload.single("file"), async (req, res) => {
+  app.post('/upload/:orgName', limiter, upload.single("file"), async (req, res) => {
     const file = req.file;
     const orgName = req.params.orgName;
 
@@ -68,7 +75,7 @@ connectDB().then(database => {
   });
 
   // Get Files of an Organization
-  app.get("/get-files/:orgName", async (req, res) => {
+  app.get("/get-files/:orgName", limiter, async (req, res) => {
     const orgName = req.params.orgName;
 
     try {
@@ -86,7 +93,7 @@ connectDB().then(database => {
   });
 
   // Get File by ID from Organization
-  app.get("/get-file/:orgName/:id", async (req, res) => {
+  app.get("/get-file/:orgName/:id", limiter, async (req, res) => {
     const orgName = req.params.orgName;
     const fileId = new ObjectId(req.params.id);
 
