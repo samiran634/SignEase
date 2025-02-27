@@ -4,9 +4,11 @@ import CardComponent from "../common/card";
 import { NavBar } from "../common/NavBar";
 import { useNavigate } from "react-router-dom";
 import { useUser, RedirectToSignIn } from "@clerk/clerk-react";
+import { useOrganization } from "@clerk/clerk-react";
   
 export default function OngoingPage() {
   const navigate = useNavigate();
+  const organization = useOrganization().organization;
   const { user } = useUser();
   const [pdfData, setPdfData] = useState([]);
  
@@ -18,7 +20,7 @@ export default function OngoingPage() {
   useEffect(() => {
     async function fetchPdfs() {
       try {
-        const response = await axios.get("http://localhost:5000/get-files");
+        const response = await axios.get(   `http://localhost:5000/get-files?orgId=${organization.id}`);
         console.log(response.data);
         setPdfData(response.data);
       } catch (error) {
