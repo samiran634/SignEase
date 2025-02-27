@@ -17,7 +17,7 @@ const Login = () => {
         className="bg-transparent rounded-lg p-8 animate-fade-in-up border-2 border-solid z-index-50 shadow-orange-600"
       >
         <SignIn     signUpUrl="/signup"
-          redirectUrl="/organization" 
+         redirectUrl={`${window.location.origin}/organization`}
           afterSignOutUrl="/organization"/>
       </motion.div>
     </motion.div>
