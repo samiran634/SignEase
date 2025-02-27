@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const multer = require("multer");
 const fs = require("fs");
-const { MongoClient, GridFSBucket, ObjectId } = require("mongodb");
+const { MongoClient, GridFSBucket } = require("mongodb");
 const RateLimit = require('express-rate-limit');
 
 dotenv.config();
@@ -49,16 +49,15 @@ connectDB().then(database => {
 
   app.get("/", limiter, (req, res) => res.send("Success!!!!!!"));
 
-  // Upload File to Organization-Specific Bucket
-  app.post('/upload/:orgName', limiter, upload.single("file"), async (req, res) => {
+  app.post('/upload', limiter, upload.single("file"), async (req, res) => {
     const file = req.file;
-    const orgName = req.params.orgName;
+    const orgId = req.query.orgId;  
 
     if (!file) return res.status(400).send("No file uploaded.");
-    if (!orgName) return res.status(400).send("Organization name required.");
+    if (!orgId) return res.status(400).send("Organization ID required.");
 
-    const orgDB = database.collection(`fs.${orgName}`); // Organization-specific collection
-    const bucket = new GridFSBucket(database, { bucketName: `fs.${orgName}` });
+    const orgDB = database.collection(`fs.${orgId}`);  
+    const bucket = new GridFSBucket(database, { bucketName: `fs.${orgId}` });
 
     const fileName = `${Date.now()}-${file.originalname}`;
 
@@ -67,19 +66,20 @@ connectDB().then(database => {
         metadata: {
           name: file.originalname,
           size: file.size,
-          type: file.mimetype
+          type: file.mimetype,
+          organization: orgId  
         }
       }))
       .on("finish", () => res.status(201).json({ message: "File uploaded successfully", fileName }))
       .on("error", (err) => res.status(500).json({ error: err.message }));
-  });
+});
 
   // Get Files of an Organization
-  app.get("/get-files/:orgName", limiter, async (req, res) => {
-    const orgName = req.params.orgName;
+  app.get("/get-files", limiter, async (req, res) => {
+    const orgId = req.query.orgId;
 
     try {
-      const files = await database.collection(`fs.${orgName}.files`).find().toArray();
+      const files = await database.collection(`fs.${orgId}.files`).find().toArray();
 
       if (!files || files.length === 0) {
         return res.status(404).json({ message: "No files found for this organization" });
@@ -93,9 +93,9 @@ connectDB().then(database => {
   });
 
   // Get File by ID from Organization
-  app.get("/get-file/:orgName/:id", limiter, async (req, res) => {
-    const orgName = req.params.orgName;
-    const fileId = new ObjectId(req.params.id);
+  app.get("/get-file", limiter, async (req, res) => {
+    const orgName = req.query.orgName;
+    const fileId =  req.query.fileId;
 
     try {
       const bucket = new GridFSBucket(database, { bucketName: `fs.${orgName}` });

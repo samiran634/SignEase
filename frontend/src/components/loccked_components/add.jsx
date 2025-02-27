@@ -20,7 +20,7 @@ function AddNewPdf() {
     formData.append("file", file);
 
     try {
-      const result = await axios.post(`http://localhost:5000/upload/${organization.id}`, formData, {
+      const result = await axios.post(`http://localhost:5000/upload?orgId=${organization.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -58,7 +58,7 @@ function AddNewPdf() {
           <div className="mb-3">
             <input
               type="file"
-              className="form-control" // ✅ Fix: Removed bg-black for better visibility
+              className="form-control"  
               accept="application/pdf"
               required
               onChange={(e) => setFile(e.target.files[0])}
