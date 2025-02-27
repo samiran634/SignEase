@@ -17,7 +17,7 @@ const CreateAccount = () => {
         className="bg-white rounded-lg p-8 shadow-lg"
       >
         <SignUp 
-          afterSignUpUrl="/dashboard"   
+          afterSignUpUrl="/organization"   
           signInUrl="/login"  
         />
       </motion.div>
