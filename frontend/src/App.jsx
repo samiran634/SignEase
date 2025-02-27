@@ -27,7 +27,7 @@ function App() {
         <Route path="/read" element={<PdfReadandAsk />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/logout" element={<SignOutPage />} />
-        <Route path="/signup" element={<CreateAccount />} /> {/* ✅ Fixed Path */}
+        <Route path="/signup" element={<CreateAccount />} />  
         <Route path="/organization" element={<OrganizationSetup />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
