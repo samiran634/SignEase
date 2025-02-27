@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-
+import { useOrganization } from "@clerk/clerk-react";
 function AddNewPdf() {
+  const organization = useOrganization().organization;
+  console.log("organization:", organization);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
 
@@ -18,7 +20,7 @@ function AddNewPdf() {
     formData.append("file", file);
 
     try {
-      const result = await axios.post("http://localhost:5000/upload", formData, {
+      const result = await axios.post(`http://localhost:5000/upload/${organization.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

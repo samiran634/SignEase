@@ -3,8 +3,8 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const multer = require("multer");
 const fs = require("fs");
-const { MongoClient, GridFSBucket,ObjectId } = require("mongodb");
- 
+const { MongoClient, GridFSBucket, ObjectId } = require("mongodb");
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,19 +34,24 @@ async function connectDB() {
 }
 
 connectDB().then(database => {
-  const bucket = new GridFSBucket(database, { bucketName: "fs" });
 
   // Start Express app after DB is connected
   app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
   });
 
-  // API Routes
   app.get("/", (req, res) => res.send("Success!!!!!!"));
 
-  app.post('/upload', upload.single("file"), (req, res) => {
+  // Upload File to Organization-Specific Bucket
+  app.post('/upload/:orgName', upload.single("file"), async (req, res) => {
     const file = req.file;
+    const orgName = req.params.orgName;
+
     if (!file) return res.status(400).send("No file uploaded.");
+    if (!orgName) return res.status(400).send("Organization name required.");
+
+    const orgDB = database.collection(`fs.${orgName}`); // Organization-specific collection
+    const bucket = new GridFSBucket(database, { bucketName: `fs.${orgName}` });
 
     const fileName = `${Date.now()}-${file.originalname}`;
 
@@ -62,39 +67,43 @@ connectDB().then(database => {
       .on("error", (err) => res.status(500).json({ error: err.message }));
   });
 
+  // Get Files of an Organization
+  app.get("/get-files/:orgName", async (req, res) => {
+    const orgName = req.params.orgName;
 
-  app.get("/get-files", async (req, res) => {
     try {
-      const files = await database.collection("fs.files").find().toArray();
-  
+      const files = await database.collection(`fs.${orgName}.files`).find().toArray();
+
       if (!files || files.length === 0) {
-        return res.status(404).json({ message: "No files found" });
+        return res.status(404).json({ message: "No files found for this organization" });
       }
-  
+
       res.json(files);
     } catch (error) {
       console.error("Error retrieving files:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
-  app.get("/get-file/:id", async (req, res) => {
+
+  // Get File by ID from Organization
+  app.get("/get-file/:orgName/:id", async (req, res) => {
+    const orgName = req.params.orgName;
+    const fileId = new ObjectId(req.params.id);
+
     try {
-      const fileId = new ObjectId(req.params.id);
-      const client = await MongoClient.connect(mongo_uri, { useUnifiedTopology: true });
-      const database = client.db("pdfstorage");
-      const bucket = new GridFSBucket(database, { bucketName: "fs" });
-  
-      const file = await database.collection("fs.files").findOne({ _id: fileId });
+      const bucket = new GridFSBucket(database, { bucketName: `fs.${orgName}` });
+      const file = await database.collection(`fs.${orgName}.files`).findOne({ _id: fileId });
+
       if (!file) {
         return res.status(404).json({ message: "File not found" });
       }
-  
-      res.set("Content-Type", "application/pdf");
+
+      res.set("Content-Type", file.metadata.type);
       bucket.openDownloadStream(fileId).pipe(res);
     } catch (error) {
       console.error("Error fetching file:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
-});
 
+});

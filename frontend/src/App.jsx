@@ -28,7 +28,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/logout" element={<SignOutPage />} />
         <Route path="/signup" element={<CreateAccount />} /> {/* ✅ Fixed Path */}
-        <Route path="/organizations" element={<OrganizationSetup />} />
+        <Route path="/organization" element={<OrganizationSetup />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

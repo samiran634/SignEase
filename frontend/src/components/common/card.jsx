@@ -19,8 +19,7 @@ const CardComponent = ({ TitleText, SubtitleText, Indecator }) => {
 
         console.log("Fetched PDF Blob:", response.data);
         setPdfBlob(response.data);
-
-        // ✅ Fixed URL Construction
+  
         const blobUrl = `http://localhost:5000/get-file/${Indecator}`;
         setPdfUrl(blobUrl);
       } catch (error) {

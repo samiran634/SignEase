@@ -53,8 +53,21 @@ export default function OngoingPage() {
         <nav className="w-full sticky top-0 z-10 backdrop-blur">
           <NavBar siteName="signEase" navItems={navItems} />
         </nav>
+       {
+        pdfData.length === 0 ?(
+          <>
+          <div className="bg-red w-screen h-screen">
+          <div className="flex justify-center items-center h-screen">
+          please upload atleast one file
+            </div>
+            
+            </div>
        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
+          </>
+          
+        ) :(  
+          <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
           {pdfData.map((pdf, index) => (
             <CardComponent 
               key={index}
@@ -64,6 +77,12 @@ export default function OngoingPage() {
             />
           ))}
         </div>
+          
+          </>
+       )
+       }
+  
+   
       </div>
     </div>
   );

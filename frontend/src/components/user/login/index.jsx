@@ -16,7 +16,9 @@ const Login = () => {
         transition={{ duration: 0.5 }}
         className="bg-transparent rounded-lg p-8 animate-fade-in-up border-2 border-solid z-index-50 shadow-orange-600"
       >
-        <SignIn signUpUrl="/signup" />
+        <SignIn     signUpUrl="/signup"
+          redirectUrl="/organization" 
+          afterSignOutUrl="/organization"/>
       </motion.div>
     </motion.div>
   );
