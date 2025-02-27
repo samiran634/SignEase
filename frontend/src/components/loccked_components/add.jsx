@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-
-function AddNewPdf( ) {
+import { useOrganization } from "@clerk/clerk-react";
+function AddNewPdf() {
+  const organization = useOrganization().organization;
+  console.log("organization:", organization);
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
 
@@ -18,15 +20,18 @@ function AddNewPdf( ) {
     formData.append("file", file);
 
     try {
-      const result = await axios.post("http://localhost:5000/upload", formData, {
+      const result = await axios.post(`http://localhost:5000/upload/${organization.id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       console.log(result);
 
-      if (result.status === 200) {
+      if (result.status === 201) {  
         alert("Uploaded Successfully!");
-         
+ 
+        setTitle("");
+        setFile(null);
+        document.getElementById("file").value = "";
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -35,7 +40,7 @@ function AddNewPdf( ) {
   };
 
   return (
-    <div className= "flex">
+    <div className="flex">
       <form className="formStyle" onSubmit={submitImage}>
         <br />
         <div className="flex gap-1 ml-10">
@@ -53,7 +58,7 @@ function AddNewPdf( ) {
           <div className="mb-3">
             <input
               type="file"
-              className="form-control bg-black"
+              className="form-control" // ✅ Fix: Removed bg-black for better visibility
               accept="application/pdf"
               required
               onChange={(e) => setFile(e.target.files[0])}

@@ -16,15 +16,17 @@ export default function OngoingPage() {
   }
 
   useEffect(() => {
-    async function fetchPdfData() {
+    async function fetchPdfs() {
       try {
         const response = await axios.get("http://localhost:5000/get-files");
-        setPdfData(response.data.data); //  response.data.data is an array of PDFs
+        console.log(response.data);
+        setPdfData(response.data);
       } catch (error) {
-        console.error("Error fetching PDF data:", error);
+        console.error("Error fetching PDFs:", error);
       }
     }
-    fetchPdfData();
+
+    fetchPdfs();
   }, []);
 
   const navItems = [
@@ -51,17 +53,36 @@ export default function OngoingPage() {
         <nav className="w-full sticky top-0 z-10 backdrop-blur">
           <NavBar siteName="signEase" navItems={navItems} />
         </nav>
+       {
+        pdfData.length === 0 ?(
+          <>
+          <div className="bg-red w-screen h-screen">
+          <div className="flex justify-center items-center h-screen">
+          please upload atleast one file
+            </div>
+            
+            </div>
        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
+          </>
+          
+        ) :(  
+          <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  ">
           {pdfData.map((pdf, index) => (
             <CardComponent 
               key={index}
-              TitleText={pdf.title}  // Using dynamic title from API response
+              TitleText={pdf.metadata.name}  // Using dynamic title from API response
               SubtitleText="Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order." 
               Indecator={pdf._id}
             />
           ))}
         </div>
+          
+          </>
+       )
+       }
+  
+   
       </div>
     </div>
   );

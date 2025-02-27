@@ -5,14 +5,14 @@
   overflow-y: auto;
 }
 
-.main {
+/* .main {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* background-color: #050D38; */
-}
+ 
+} */
 
 .hero-image {
   width: 100%;
