@@ -9,25 +9,51 @@ import { HeroImage } from "./HeroImage";
 import { HeroContent } from "./HeroContent";
 import { CardDefault } from "./cards/verticalcard";
 import { FaChevronLeft, FaChevronRight, FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
-
+import VarticalCard from "./cards/horizontalcard";
 // Sample Card Data
 const items = [
-  { title: "Streamline Your Workflow", subtitle: "Optimize and automate your business processes effortlessly.", image: "/automate_business.png" },
-  { title: "AI-Powered Insights", subtitle: "Leverage artificial intelligence to make data-driven decisions.", image: "/ai_insights.png" },
-  { title: "Secure Digital Agreements", subtitle: "Sign, store, and manage contracts with industry-leading security.", image: "/secure.png" },
-  { title: "Seamless Collaboration", subtitle: "Work together in real-time with built-in team management tools.", image: "/togather.png" },
-  { title: "Effortless Document Management", subtitle: "Upload, organize, and retrieve files instantly from anywhere.", image: "/effortless.png" },
+  {
+    title: "Streamline Your Workflow",
+    subtitle: "Optimize and automate your business processes effortlessly.",
+    image: "/automate_business.png",
+    text: "Enhance efficiency by automating repetitive tasks, reducing manual effort, and improving overall productivity."
+  },
+  {
+    title: "AI-Powered Insights",
+    subtitle: "Leverage artificial intelligence to make data-driven decisions.",
+    image: "/ai_insights.png",
+    text: "Utilize AI-driven analytics to uncover trends, predict outcomes, and make smarter business decisions with confidence."
+  },
+  {
+    title: "Secure Digital Agreements",
+    subtitle: "Sign, store, and manage contracts with industry-leading security.",
+    image: "/secure.png",
+    text: "Ensure the authenticity and safety of your agreements with encrypted e-signatures and secure cloud storage."
+  },
+  {
+    title: "Seamless Collaboration",
+    subtitle: "Work together in real-time with built-in team management tools.",
+    image: "/togather.png",
+    text: "Faster teamwork with real-time editing, shared workspaces, and communication tools to enhance productivity."
+  },
+  {
+    title: "Effortless Document Management",
+    subtitle: "Upload, organize, and retrieve files instantly from anywhere.",
+    image: "/effortless.png",
+    text: "Access and manage your documents easily with an intuitive system that ensures organization and quick retrieval."
+  }
 ];
+
 
 export const LandingPage = () => {
   const navigate = useNavigate();
   const user = useUser().user;
-
+  const [showVerticalCard, setShowVerticalCard] = useState(false);
   const [showRoller, setShowRoller] = useState(false);
   const headerRef = useRef(null);
   const footerRef = useRef(null);
   const textRef = useRef(null);
-  const isTextInView = useInView(textRef, { once: true, margin: "-50% 0px -10%" });
+  const isTextInView = useInView(textRef, { once: false, margin: "-50% 0px -10%" });
 
   const scrollRef = useRef(null);
   const [headerOpacity, setHeaderOpacity] = useState(1);
@@ -91,14 +117,25 @@ export const LandingPage = () => {
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = 400;
+      const scrollAmount = 200;
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
       });
     }
   };
+  const [selectedCard, setSelectedCard] = useState(null);
 
+  const handleCardClick = (title, subtitle,text, event) => {
+    const rect = event.currentTarget.getBoundingClientRect();  
+    console.log(rect);
+    setSelectedCard({
+      title,
+      subtitle,
+      text
+    });
+    setShowVerticalCard( !showVerticalCard);
+  };
   return (
     <div
       className="flex flex-col pt-10 py-10 px-10 w-screen min-h-screen max-md:px-5 max-md:max-w-screen bg-cover bg-no-repeat"
@@ -133,15 +170,20 @@ export const LandingPage = () => {
         aria-label="main"
         className="mt-40 flex justify-center flex-col h-screen w-screen max-md:mt-20 max-md:w-full"
       >
-        <div ref={textRef} className="opacity-1 flex text-center justify-center max-md:flex-col">
+        <motion.div ref={textRef}   className="opacity-1 flex text-center justify-center max-md:flex-col">
           <h1 className="text-4xl font-bold max-md:text-2xl">
-            {"What you can expect".split("").map((word, index) => (
-              <span key={index} className="inline-block">
+            {"What you can expect".split('').map((word, index) => (
+              <motion.span   key={index}
+              className="inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              style={word === " " ? { marginRight: "0.25em" } : {}}
+              animate={isTextInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.4, delay: index * 0.04 }}>
                 {word}
-              </span>
+              </motion.span>
             ))}
           </h1>
-        </div>
+        </motion.div>
 
         {/* Carousel with Arrows */}
  
@@ -156,20 +198,34 @@ export const LandingPage = () => {
           >
             <FaChevronLeft size={20} />
           </button>
-
-          {/* Card Container */}
-          <div
+            {/*  Cards */}
+            <div
             ref={scrollRef}
-            className="h-[70vh] w-[80vw] mt-6 flex flex-row gap-8 border rounded-2xl p-6 overflow-x-auto 
-                   justify-start items-center scrollbar-hide snap-x scroll-smooth"
-          >
-            {items.map(({ title, subtitle, image }, index) => (
-              <div key={index} className="flex-shrink-0">
-                <CardDefault Title={title} SubTitle={subtitle} Image={image} />
-              </div>
-            ))}
+      className="h-[70vh] w-[80vw] mt-6 flex flex-row gap-8 border rounded-2xl p-6 overflow-x-auto 
+               justify-start items-center scrollbar-hide snap-x scroll-smooth"
+               style={{ scrollBehavior: "smooth", WebkitOverflowScrolling: "touch" }}
+    >
+      {items.map(({ title, subtitle, image,text }, index) => (
+        <div key={index} className="flex-shrink-0">
+          <div onClick={(e) => handleCardClick(title, subtitle,text, e)}>
+            <CardDefault Title={title} SubTitle={subtitle} Image={image} />
           </div>
+        </div>
+      ))}
 
+      {showVerticalCard && selectedCard && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, x: selectedCard.x, y: selectedCard.y }}
+          animate={{ opacity: 1, scale: 1, x: selectedCard.x, y: selectedCard.y + 20 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="absolute z-50      rounded-xl shadow-lg "
+        >
+          <VarticalCard Title={selectedCard.title} subtitle={selectedCard.subtitle} text={selectedCard.text} />
+        </motion.div>
+      )}
+    </div>
+      
           {/* Right Arrow */}
           <button
             className="absolute right-36 top-1/2 transform -translate-y-1/2 p-3 bg-gray-700 text-white rounded-full shadow-md 
@@ -232,7 +288,7 @@ export const LandingPage = () => {
       </div>
 
       {/* Footer Bottom: Social Links */}
-      <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400">
+      <div className="mt-10 border-t border-gray-700 pt-6 flex flex-row sm:flex-row justify-between items-center text-gray-400">
         <div className="flex gap-4 mt-4 md:mt-0 max-md:flex-col max-md:items-center">
           <a href="#" className="hover:text-blue-500 max-md:mb-2">
             <FaFacebook size={24} />

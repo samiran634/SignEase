@@ -11,8 +11,7 @@
   margin:0;
   padding:0;
    box-sizing: border-box; 
-  /* background-image: linear-gradient(45deg, #060606, #2f38bb9c); */
-  color-scheme: light dark;
+ 
   color: rgba(243, 241, 241, 0.87);
   background-color: #2d2b2b;
   scrollbar-width: .2px;
@@ -30,24 +29,9 @@ a {
 a:hover {
   color: #535bf2;
 }
-.logged-in {
-  background-color: #ffffff;  
-  color: #000000;  
-   
-}
-body {
-  margin: 0;
-  display: flex;
  
-  
-  background-color: transparent;
-}
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
+ 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -67,20 +51,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+ 
 
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
+ 
