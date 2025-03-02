@@ -3,7 +3,7 @@ import axios from "axios";
 import cool_background from "../../assets/cool_background.png";
 import { useNavigate } from "react-router-dom";
 
-const CardComponent = ({ TitleText, SubtitleText, Indecator }) => {
+const CardComponent = ({ TitleText, SubtitleText,orgName, Indecator }) => {
   const navigate = useNavigate();
   const [pdfBlob, setPdfBlob] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -13,14 +13,15 @@ const CardComponent = ({ TitleText, SubtitleText, Indecator }) => {
       if (!Indecator) return;
 
       try {
-        const response = await axios.get(`http://localhost:5000/get-file/${Indecator}`, {
-          responseType: "blob",
-        });
+       
+const response = await axios.get(`http://localhost:5000/get-file?orgName=${orgName}&fileId=${Indecator}`, {
+  responseType: "blob",
+});
 
         console.log("Fetched PDF Blob:", response.data);
         setPdfBlob(response.data);
   
-        const blobUrl = `http://localhost:5000/get-file/${Indecator}`;
+        const blobUrl = `http://localhost:5000/get-file?orgName=${orgName}&fileId=${Indecator}`;
         setPdfUrl(blobUrl);
       } catch (error) {
         console.error("Error fetching PDF data:", error);
