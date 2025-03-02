@@ -3,27 +3,21 @@ import { useNavigate } from "react-router-dom";
 
 export function CardDefault({ Title, SubTitle, Image }) {
   const navigate = useNavigate();
-  const [isFlipped, setIsFlipped] = useState(false);
+   
 
-  const handleFlip = () => {
-    setIsFlipped(!isFlipped);
-  };
+  
 
   return (
     <div
-      className={`w-[16em] h-[22em] perspective-1000 cursor-pointer bg-white/80`}
-      onClick={handleFlip}
+      className={`w-[16em] h-[22em] perspective-1000 cursor-pointer bg-white/80 `}
+      
     >
       <div
-        className={`relative w-full h-full transition-transform duration-500 ${
-          isFlipped ? "rotate-y-180" : ""
-        }`}
+        className={`relative w-full h-full transition-transform duration-500 `}
       >
         {/* Front of the card */}
         <div
-          className={`absolute w-full h-full backface-hidden ${
-            isFlipped ? "hidden" : ""
-          }`}
+          className={`absolute w-full h-full backface-hidden`}
         >
           <img className="w-full h-48 object-cover" src={Image} alt="Card" />
           <div className="p-5 flex flex-col justify-between h-[calc(100%-12rem)]">
@@ -58,21 +52,7 @@ export function CardDefault({ Title, SubTitle, Image }) {
           </div>
         </div>
         {/* Back of the card */}
-        <div
-          className={`absolute w-full h-full bg-white border border-gray-300 rounded-xl shadow-lg overflow-hidden 
-                     transform rotate-y-180 backface-hidden ${
-                       isFlipped ? "" : "hidden"
-                     }`}
-        >
-          <div className="p-5 flex flex-col justify-center items-center h-full">
-            <h5 className="text-xl font-semibold text-gray-900 dark:text-white">
-              More Information
-            </h5>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
-              Here is some more information about this card.
-            </p>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

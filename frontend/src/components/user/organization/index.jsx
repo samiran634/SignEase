@@ -38,9 +38,9 @@ const OrganizationSetup = () => {
   };
   
   return (
-    <div className="flex w-screen justify-center   bg-gradient-to-r from-red-600 to-blue-600 h-screen">
-      <div className="flex flex-col justify-center bg-white p-8 rounded-lg shadow-md max-w-md w-full space-y-6  ">
-        <h2 className="text-2xl text-center font-bold mb-6 text-black">Manage Your Organization</h2>
+    <div className="flex w-screen justify-center  bg-gradient-to-r from-red-600 to-blue-600 h-screen overflow-auto">
+      <div className="flex flex-col justify-center bg-white p-8 rounded-lg shadow-md max-w-md w-full space-y-6 mt-8 rounded-2lg"> 
+        <h2 className="text-2xl text-center font-bold mb-6 text-black mt-4">Manage Your Organization</h2>
         
         {/* Tab Navigation */}
         <div className="flex mb-6 border-b">
@@ -113,6 +113,12 @@ const OrganizationSetup = () => {
         </div>
         
         {/* Skip for now button */}
+        <button 
+          onClick={skipForNow}
+          className="text-gray-500 py-2 text-sm hover:text-gray-700"
+        >
+          proceed with selected organization
+        </button>
         <button 
           onClick={skipForNow}
           className="text-gray-500 py-2 text-sm hover:text-gray-700"
