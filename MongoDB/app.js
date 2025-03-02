@@ -5,7 +5,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { MongoClient, GridFSBucket } = require("mongodb");
 const RateLimit = require('express-rate-limit');
-
+const { ObjectId } = require("mongodb");
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -95,8 +95,8 @@ connectDB().then(database => {
   // Get File by ID from Organization
   app.get("/get-file", limiter, async (req, res) => {
     const orgName = req.query.orgName;
-    const fileId =  req.query.fileId;
-
+    const fileId = new ObjectId(req.query.fileId);
+    console.log(orgName, fileId);
     try {
       const bucket = new GridFSBucket(database, { bucketName: `fs.${orgName}` });
       const file = await database.collection(`fs.${orgName}.files`).findOne({ _id: fileId });

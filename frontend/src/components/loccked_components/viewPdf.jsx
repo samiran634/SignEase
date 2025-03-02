@@ -4,12 +4,16 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import ChatbotContainer from "./chatbot_container";
 import { NavBar } from "../common/NavBar";
 import PdfComp from "./pdfComp";
-
+import { useUser,useOrganization } from "@clerk/clerk-react";
 export default function PdfReadandAsk() {
   const [pdfFile, setPdfFile] = useState(null);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
+  const user = useUser().user;
+  const organization=useOrganization().organization;
+  if(user===null){
+    navigate("/sign-in");
+  }
   const pdfId = searchParams.get("key");
   const [isVisable, setvisable] = useState(false);
   const navItems = [
@@ -23,12 +27,7 @@ export default function PdfReadandAsk() {
       if (!pdfId) return;
 
       try {
-        const response = await axios.get(`http://localhost:5000/get-file/${pdfId}`, {
-          responseType: "blob", // ✅ Fetch as binary file
-        });
-
-        // ✅ Convert Blob to URL
-        const pdfUrl = 'http://localhost:5000/get-file/' + pdfId;
+        const pdfUrl = `http://localhost:5000/get-file?orgName=${organization.id}&fileId=${pdfId}`;  
         console.log(pdfUrl);
         setPdfFile(pdfUrl);
       } catch (error) {
@@ -49,7 +48,6 @@ if(response.data==="success"){
   setTimeout(() => {
     setvisable(false);
   }, 5000);
- 
 }
 }
   return (
