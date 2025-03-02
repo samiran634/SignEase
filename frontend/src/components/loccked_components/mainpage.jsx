@@ -118,7 +118,7 @@ const MainPage = () => {
         
         {/* Organization button positioned at bottom right */}
         <button 
-          className="fixed bottom-8 right-8 w-16 h-16 rounded-full shadow-lg hover:shadow-xl transition-shadow z-20"
+          className="fixed bottom-8 right-8 w-20 h-20 rounded-full shadow-lg hover:shadow-2xl transition-shadow z-20 bg-white"
           onClick={() => navigate("/dashboard")}
         >
           <img src="/organization_logo.png" alt="organization" className="w-full h-full object-cover rounded-full" />

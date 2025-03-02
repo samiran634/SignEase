@@ -12,21 +12,20 @@ export default function ChatbotContainer() {
     const newMessages = [...messages, { text: input, sender: "user" }];
     setMessages(newMessages);
     setInput("");
-
     try {
-      const ques=JSON.stringify(input);
-      console.log( ques);
-      const response = await axios.post(`http://localhost:8080/ask`, {Headers:
+      const response = await axios.post(
+        `http://localhost:8080/ask`,
+        // Send the data directly as the request body
+        JSON.stringify(input), 
+        // Put headers in the config object (third parameter)
         {
-          'content-type': "application/json",
-        },
-          body:JSON.stringify({
-            question:  input
-          }),
-      });
-
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    
       console.log("Chatbot Response:", response.data);
-
       setMessages([...newMessages, { text: response.data, sender: "bot" }]);
     } catch (error) {
       console.error("Error fetching chatbot response:", error);
@@ -54,14 +53,14 @@ export default function ChatbotContainer() {
       {/* Input field */}
       <div className="p-3 border-t flex items-center bg-white">
         <input
-          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
           placeholder="Have questions? Ask here..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
-          className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="ml-2 bg-blue-500 text-black px-4 py-2 rounded-lg hover:bg-blue-600"
           onClick={sendMessage}
         >
           Send
