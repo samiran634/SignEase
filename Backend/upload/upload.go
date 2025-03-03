@@ -141,20 +141,23 @@ func HandleGetImportantWords(w http.ResponseWriter, r *http.Request) error {
 	}
 	return u.WriteJSON(w,http.StatusOK,"pdf highlighted successfully")
 }
-
+//asking about pdf
 func HandleUploadQuestion(w http.ResponseWriter, r *http.Request)error{
 	var question string
 	err:=json.NewDecoder(r.Body).Decode(&question)
 	if(err!=nil){
+		panic(err);
 		return err
 	}
 	twd.AddQuestion(question)
 	res,err:=mod.CreateRunable(twd.G)
 	if(err!=nil){
+		panic(err);
 		return err
 	}
 	ans,err:=res.Invoke(twd.G)
 	if(err!=nil){
+		panic(err)
 		return err
 	}
 	return utils.WriteJSON(w,http.StatusOK,ans)
