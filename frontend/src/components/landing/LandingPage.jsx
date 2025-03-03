@@ -219,7 +219,7 @@ export const LandingPage = () => {
           animate={{ opacity: 1, scale: 1, x: selectedCard.x, y: selectedCard.y + 20 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="absolute z-50      rounded-xl shadow-lg "
+          className="absolute z-50 rounded-xl shadow-lg "
         >
           <VarticalCard Title={selectedCard.title} subtitle={selectedCard.subtitle} text={selectedCard.text} />
         </motion.div>
@@ -253,7 +253,7 @@ export const LandingPage = () => {
           <div className="relative w-full aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-lg">
             <iframe
               className="w-full h-48 rounded-lg"
-              src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+              src="https://www.youtube.com/embed/JsHUK0GpVEY?si=zBa_NA-l11Ig7sHx"
               title="Tutorial Video"
               allowFullScreen
             ></iframe>
