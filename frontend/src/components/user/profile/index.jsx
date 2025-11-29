@@ -25,7 +25,7 @@ import { dark } from "@clerk/themes";
         onClick={() => navigate("/")} 
         className="absolute top-4 left-4 bg-zinc-600 text-white px-4 py-2 rounded-2lg shadow-md hover:bg-blue-700 transition"
       >
-        ⬅ Back to Home
+        â¬ Back to Home
       </button>
 </div>
 

@@ -48,7 +48,7 @@ console.log("userMemberships.data:", userMemberships?.data);
             <p className="text-sm text-gray-500">Role: {membership.role}</p>
           </div>
           {membership.organization.id === userMemberships.currentOrganization?.id && (
-            <span className="text-green-500 text-xl">✓</span>
+            <span className="text-green-500 text-xl">â</span>
           )}
         </div>
       ))}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useUser, useOrganization } from "@clerk/clerk-react";
-
+//changes form code canva
 const JoinOrganization = () => {
   const [invitationCode, setInvitationCode] = useState("");
   const [isJoining, setIsJoining] = useState(false);
